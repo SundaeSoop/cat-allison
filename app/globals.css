@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+/* ===============================
+   THEME VARIABLES
+   =============================== */
+
+:root {
+  /* Elegant Watercolor Theme (Default) */
+  --bg: 255 255 255;
+  --fg: 17 24 39;
+  --muted: 107 114 128;
+  --border: 229 231 235;
+  --card: 255 255 255;
+
+  --accent: 17 24 39;
+}
+
+/* Cyberpunk Digital Theme */
+[data-theme="cyberpunk"] {
+  --bg: 6 8 16;
+  --fg: 238 242 255;
+  --muted: 156 163 175;
+  --border: 55 65 81;
+  --card: 12 16 32;
+
+  --accent: 168 85 247; /* neon violet */
+}
+
+/* ===============================
+   BASE STYLES
+   =============================== */
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: transparent;
+  color: rgb(var(--fg));
+}
+
+/* ===============================
+   REUSABLE UTILITY CLASSES
+   =============================== */
+
+.container {
+  @apply mx-auto w-full max-w-6xl px-4;
+}
+
+.card {
+  background: rgb(var(--card));
+  border: 1px solid rgb(var(--border));
+  @apply rounded-2xl shadow-sm;
+}
+
+.muted {
+  color: rgb(var(--muted));
+}
+
+/* Optional: subtle neon glow only in cyberpunk mode */
+[data-theme="cyberpunk"] .card {
+  box-shadow:
+    0 0 0 1px rgba(168, 85, 247, 0.2),
+    0 10px 30px rgba(0, 0, 0, 0.6);
+}
