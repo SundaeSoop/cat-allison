@@ -9,8 +9,8 @@ export async function proxy(request: NextRequest) {
   ) {
     const response = NextResponse.next();
     const session = await getIronSession<SessionData>(
-      request.cookies,
-      response.cookies,
+      request,
+      response,
       sessionOptions
     );
 
