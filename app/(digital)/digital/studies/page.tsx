@@ -1,8 +1,14 @@
 import Image from "next/image";
-import { DIGITAL_PIECES } from "../../../lib/digital-gallery";
+import { db } from "@/app/lib/db";
+import { digitalPieces } from "@/app/lib/db/schema";
+import { asc, eq } from "drizzle-orm";
 
-export default function StudiesPage() {
-  const studies = DIGITAL_PIECES.filter((p) => p.category === "studies");
+export default async function DigitalStudiesPage() {
+  const studies = await db
+    .select()
+    .from(digitalPieces)
+    .where(eq(digitalPieces.category, "studies"))
+    .orderBy(asc(digitalPieces.position));
 
   return (
     <div className="flex flex-col gap-8">
@@ -13,10 +19,7 @@ export default function StudiesPage() {
         </p>
 
         <div className="mt-2 flex gap-3">
-          <a
-            href="/digital"
-            className="text-sm opacity-80 hover:opacity-100 transition"
-          >
+          <a href="/digital" className="text-sm opacity-80 hover:opacity-100 transition">
             ← Back to Digital Gallery
           </a>
         </div>
@@ -24,19 +27,18 @@ export default function StudiesPage() {
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {studies.map((a) => (
-          <div key={a.id} className="group">
+          <div key={a.id}>
             <div className="card overflow-hidden">
               <div className="relative aspect-[4/3] bg-black/20">
                 <Image
-                  src={a.src}
+                  src={a.srcUrl}
                   alt={a.title}
                   fill
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
-                  className="object-cover transition duration-500 group-hover:scale-[1.02]"
+                  className="object-cover"
                 />
               </div>
             </div>
-
             <div className="mt-2 text-sm font-medium">{a.title}</div>
             <div className="text-xs muted">Study</div>
           </div>

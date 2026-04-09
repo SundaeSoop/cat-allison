@@ -1,6 +1,7 @@
-// app/(watercolor)/gallery/[id]/page.tsx
 import Image from "next/image";
-import { WATERCOLOR_PIECES } from "../../../lib/watercolor-gallery";
+import { db } from "@/app/lib/db";
+import { watercolorPieces } from "@/app/lib/db/schema";
+import { eq } from "drizzle-orm";
 
 export default async function ArtworkPage({
   params,
@@ -9,7 +10,11 @@ export default async function ArtworkPage({
 }) {
   const { id } = await params;
 
-  const piece = WATERCOLOR_PIECES.find((p) => p.id === id);
+  const [piece] = await db
+    .select()
+    .from(watercolorPieces)
+    .where(eq(watercolorPieces.id, id))
+    .limit(1);
 
   if (!piece) {
     return (
@@ -17,12 +22,10 @@ export default async function ArtworkPage({
         <a className="text-sm text-gray-500 hover:text-gray-700 transition" href="/gallery">
           ← Back to gallery
         </a>
-
         <h1 className="mt-4 text-2xl font-semibold tracking-tight">Not found</h1>
         <p className="mt-2 text-gray-600">
           That piece doesn't exist yet (or the link is wrong).
         </p>
-
         <div className="mt-4 text-xs text-gray-500">
           Requested id: <span className="font-mono">{id}</span>
         </div>
@@ -45,7 +48,7 @@ export default async function ArtworkPage({
         <div className="card overflow-hidden">
           <div className="relative aspect-square bg-gray-100">
             <Image
-              src={piece.image}
+              src={piece.imageUrl}
               alt={piece.title}
               fill
               priority

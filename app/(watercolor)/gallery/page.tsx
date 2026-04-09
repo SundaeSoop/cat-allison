@@ -1,7 +1,14 @@
 import Image from "next/image";
-import { WATERCOLOR_PIECES } from "../../lib/watercolor-gallery";
+import { db } from "@/app/lib/db";
+import { watercolorPieces } from "@/app/lib/db/schema";
+import { asc } from "drizzle-orm";
 
-export default function GalleryPage() {
+export default async function GalleryPage() {
+  const pieces = await db
+    .select()
+    .from(watercolorPieces)
+    .orderBy(asc(watercolorPieces.position));
+
   return (
     <div className="flex flex-col gap-10">
       <div className="flex items-end justify-between gap-6">
@@ -16,12 +23,12 @@ export default function GalleryPage() {
       </div>
 
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {WATERCOLOR_PIECES.map((p) => (
+        {pieces.map((p) => (
           <a key={p.id} href={`/gallery/${p.id}`} className="group">
             <div className="card overflow-hidden">
               <div className="relative aspect-[4/3] bg-gray-100">
                 <Image
-                  src={p.image}
+                  src={p.imageUrl}
                   alt={p.title}
                   fill
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -29,7 +36,6 @@ export default function GalleryPage() {
                 />
               </div>
             </div>
-
             <div className="mt-3 text-sm font-medium">{p.title}</div>
             <div className="text-xs text-gray-500">{p.medium}</div>
           </a>

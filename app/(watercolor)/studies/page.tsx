@@ -1,7 +1,14 @@
 import Image from "next/image";
-import { WATERCOLOR_STUDIES } from "../../lib/watercolor-studies";
+import { db } from "@/app/lib/db";
+import { watercolorStudies } from "@/app/lib/db/schema";
+import { asc } from "drizzle-orm";
 
-export default function StudiesPage() {
+export default async function StudiesPage() {
+  const studies = await db
+    .select()
+    .from(watercolorStudies)
+    .orderBy(asc(watercolorStudies.position));
+
   return (
     <div className="flex flex-col gap-10">
       <div className="flex items-end justify-between gap-6">
@@ -16,22 +23,21 @@ export default function StudiesPage() {
       </div>
 
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {WATERCOLOR_STUDIES.map((p) => (
-          <div key={p.id}>
+        {studies.map((s) => (
+          <div key={s.id}>
             <div className="card overflow-hidden">
               <div className="relative aspect-[4/3] bg-gray-100">
                 <Image
-                  src={p.image}
-                  alt={p.title}
+                  src={s.imageUrl}
+                  alt={s.title}
                   fill
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   className="object-cover"
                 />
               </div>
             </div>
-
-            <div className="mt-3 text-sm font-medium">{p.title}</div>
-            <div className="text-xs text-gray-500">{p.medium}</div>
+            <div className="mt-3 text-sm font-medium">{s.title}</div>
+            <div className="text-xs text-gray-500">{s.medium}</div>
           </div>
         ))}
       </div>
