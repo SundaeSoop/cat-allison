@@ -1,15 +1,18 @@
 // app/layout.tsx
 import "./globals.css";
+import { GlitchProvider } from "./components/GlitchProvider";
 
 export const metadata = {
-  title: "Catherine",
-  description: "Watercolor paintings",
+  title: "Catherine Allison",
+  description: "Watercolor paintings and digital art by Catherine Allison",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <GlitchProvider>{children}</GlitchProvider>
+      </body>
     </html>
   );
 }

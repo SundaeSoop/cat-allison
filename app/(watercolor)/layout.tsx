@@ -1,5 +1,7 @@
 // app/(watercolor)/layout.tsx
 import { WindSong } from "next/font/google";
+import { GlitchLink } from "../components/GlitchLink";
+import { GlitchText } from "../components/GlitchText";
 
 const windSong = WindSong({
   subsets: ["latin"],
@@ -17,7 +19,7 @@ export default function WatercolorLayout({
       style={{ background: "rgb(var(--bg))", color: "rgb(var(--fg))" }}
     >
       <header
-        className="backdrop-blur"
+        className="sticky top-0 z-50 backdrop-blur"
         style={{
           borderBottom: "1px solid rgb(var(--border))",
           background: "rgba(255, 255, 255, 0.8)",
@@ -29,21 +31,13 @@ export default function WatercolorLayout({
           </a>
 
           <nav className="flex gap-6 text-sm" style={{ color: "rgb(var(--muted))" }}>
-            <a className="hover:opacity-100 opacity-80" href="/gallery">
-              Gallery
-            </a>
-            <a className="hover:opacity-100 opacity-80" href="/studies">
-              Studies
-            </a>
-            <a className="hover:opacity-100 opacity-80" href="/digital">
-              Digital
-            </a>
-            <a className="hover:opacity-100 opacity-80" href="/about">
-              About
-            </a>
-            <a className="hover:opacity-100 opacity-80" href="/contact">
-              Contact
-            </a>
+            <a className="hover:opacity-100 opacity-80" href="/gallery">Gallery</a>
+            <a className="hover:opacity-100 opacity-80" href="/studies">Studies</a>
+            <GlitchLink href="/digital" className="hover:opacity-100 opacity-80">
+              <GlitchText text="Digital" hoverOnly />
+            </GlitchLink>
+            <a className="hover:opacity-100 opacity-80" href="/about">About</a>
+            <a className="hover:opacity-100 opacity-80" href="/contact">Contact</a>
           </nav>
         </div>
       </header>

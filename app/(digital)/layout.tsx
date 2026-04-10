@@ -1,11 +1,7 @@
 // app/(digital)/layout.tsx
 import type { ReactNode } from "react";
-import { Permanent_Marker } from "next/font/google";
-
-const permanentMarker = Permanent_Marker({
-  subsets: ["latin"],
-  weight: "400",
-});
+import { GlitchLink } from "../components/GlitchLink";
+import { GlitchText } from "../components/GlitchText";
 
 const neonStyle: React.CSSProperties = {
   backgroundImage:
@@ -38,47 +34,29 @@ export default function DigitalLayout({ children }: { children: ReactNode }) {
           }}
         >
           <div className="container py-5 flex items-center justify-between">
-            {/* Left: Cat */}
             <a
               href="/digital"
-              className={`${permanentMarker.className} text-5xl tracking-wide bg-clip-text text-transparent`}
-              style={neonStyle}
+              className="tracking-wide bg-clip-text text-transparent"
+              style={{ ...neonStyle, fontWeight: 700, textTransform: "uppercase", fontSize: "2.5rem" }}
             >
-              Cat
+              <GlitchText text="Catherine" />
             </a>
 
-            {/* Right: links (NO route group names in hrefs) */}
-            <nav className="flex items-center gap-6 text-sm">
-              <a
-                href="/"
-                className="tracking-wide bg-clip-text text-transparent opacity-90 hover:opacity-100 transition-opacity"
-                style={neonStyle}
-              >
-                Watercolor
+            <nav className="flex items-center gap-6 text-sm" style={{ fontWeight: 700, textTransform: "uppercase" }}>
+              <GlitchLink href="/" className="bg-clip-text text-transparent" style={neonStyle}>
+                <GlitchText text="Watercolor" />
+              </GlitchLink>
+
+              <a href="/digital/studies" className="bg-clip-text text-transparent" style={neonStyle}>
+                <GlitchText text="Studies" />
               </a>
 
-              <a
-                href="/digital/studies"
-                className="tracking-wide bg-clip-text text-transparent opacity-90 hover:opacity-100 transition-opacity"
-                style={neonStyle}
-              >
-                Studies
+              <a href="/about" className="bg-clip-text text-transparent" style={neonStyle}>
+                <GlitchText text="About" />
               </a>
 
-              <a
-                href="/about"
-                className="tracking-wide bg-clip-text text-transparent opacity-90 hover:opacity-100 transition-opacity"
-                style={neonStyle}
-              >
-                About
-              </a>
-
-              <a
-                href="/contact"
-                className="tracking-wide bg-clip-text text-transparent opacity-90 hover:opacity-100 transition-opacity"
-                style={neonStyle}
-              >
-                Contact
+              <a href="/contact" className="bg-clip-text text-transparent" style={neonStyle}>
+                <GlitchText text="Contact" />
               </a>
             </nav>
           </div>

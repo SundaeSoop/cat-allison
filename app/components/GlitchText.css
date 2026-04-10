@@ -1,0 +1,86 @@
+.glitch-text {
+  position: relative;
+  display: inline-block;
+}
+
+.glitch-text__main {
+  position: relative;
+  z-index: 1;
+}
+
+.glitch-text__layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Layer 1 — top slice, magenta fringe */
+.glitch-text__layer--1 {
+  clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
+  text-shadow: 0.05em 0 0 rgba(255, 46, 196, 0.8);
+  animation: glitch-layer-1 4s infinite;
+}
+
+/* Layer 2 — middle slice, cyan fringe */
+.glitch-text__layer--2 {
+  clip-path: polygon(0 35%, 100% 35%, 100% 65%, 0 65%);
+  text-shadow: -0.05em 0 0 rgba(0, 247, 255, 0.8);
+  animation: glitch-layer-2 3.5s infinite;
+  animation-delay: 0.4s;
+}
+
+/* Layer 3 — bottom slice, violet fringe */
+.glitch-text__layer--3 {
+  clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
+  text-shadow: 0.04em 0 0 rgba(168, 85, 247, 0.8);
+  animation: glitch-layer-3 3.8s infinite;
+  animation-delay: 0.2s;
+}
+
+/* Hover — same animations but faster */
+.glitch-text:hover .glitch-text__layer--1 { animation-duration: 1.2s; }
+.glitch-text:hover .glitch-text__layer--2 { animation-duration: 0.9s; }
+.glitch-text:hover .glitch-text__layer--3 { animation-duration: 1.05s; }
+
+/* Hover-only mode: layers hidden at rest, visible on hover */
+.glitch-text--hover-only .glitch-text__layer {
+  opacity: 0;
+  animation: none;
+}
+.glitch-text--hover-only:hover .glitch-text__layer {
+  opacity: 1;
+}
+.glitch-text--hover-only:hover .glitch-text__layer--1 { animation: glitch-layer-1 1.2s infinite; }
+.glitch-text--hover-only:hover .glitch-text__layer--2 { animation: glitch-layer-2 0.9s infinite; animation-delay: 0.4s; }
+.glitch-text--hover-only:hover .glitch-text__layer--3 { animation: glitch-layer-3 1.05s infinite; animation-delay: 0.2s; }
+
+@keyframes glitch-layer-1 {
+  0%,  14% { transform: translate(-0.04em, -0.03em); }
+  15%, 49% { transform: translate(0.05em,  0.02em);  }
+  50%, 99% { transform: translate(-0.03em, 0.04em);  }
+  100%     { transform: translate(-0.04em, -0.03em); }
+}
+
+@keyframes glitch-layer-2 {
+  0%,  14% { transform: translate(0.04em,  0.02em);  }
+  15%, 49% { transform: translate(-0.05em, -0.03em); }
+  50%, 99% { transform: translate(0.03em,  0.05em);  }
+  100%     { transform: translate(0.04em,  0.02em);  }
+}
+
+@keyframes glitch-layer-3 {
+  0%,  14% { transform: translate(0.02em,  0.04em);  }
+  15%, 49% { transform: translate(-0.04em, -0.02em); }
+  50%, 99% { transform: translate(0.05em,  -0.03em); }
+  100%     { transform: translate(0.02em,  0.04em);  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glitch-text__layer {
+    animation: none !important;
+    transition: none !important;
+    opacity: 0 !important;
+  }
+}

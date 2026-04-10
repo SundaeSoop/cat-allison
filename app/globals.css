@@ -65,3 +65,86 @@ body {
     0 0 0 1px rgba(168, 85, 247, 0.2),
     0 10px 30px rgba(0, 0, 0, 0.6);
 }
+
+/* ===============================
+   GLITCH TRANSITION OVERLAY
+   Safe: no strobing, no rapid color changes.
+   Fade out → strip cover → strip reveal → fade in.
+   =============================== */
+
+.glitch-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: all;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Full-screen dark fade layer.
+   Single continuous animation: fade in → hold while strips play → fade out.
+   Total duration matches DONE_AT (1600ms). */
+.glitch-fade {
+  position: absolute;
+  inset: 0;
+  background: #060810;
+  pointer-events: none;
+  opacity: 0;
+  animation: glitch-fade-full 1s ease forwards;
+}
+@keyframes glitch-fade-full {
+  0%   { opacity: 0; }
+  30%  { opacity: 1; }   /* fully dark ~300ms in */
+  60%  { opacity: 1; }   /* hold while strips reveal */
+  100% { opacity: 0; }   /* fade out by 1000ms */
+}
+
+/* Each strip covers 1/10th of the screen height. */
+.glitch-strip {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 10%;
+  top: calc(var(--strip-i) * 10%);
+  background: #080a14;
+}
+
+/* --- Cover: strips slide in from alternating sides --- */
+.glitch-strip[data-phase="cover"][data-dir="left"] {
+  animation: strip-cover-left 200ms ease-in forwards;
+  animation-delay: calc(var(--strip-i) * 18ms);
+}
+.glitch-strip[data-phase="cover"][data-dir="right"] {
+  animation: strip-cover-right 200ms ease-in forwards;
+  animation-delay: calc(var(--strip-i) * 18ms);
+}
+
+@keyframes strip-cover-left {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(0); }
+}
+@keyframes strip-cover-right {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(0); }
+}
+
+/* --- Reveal: strips slide out with a brief sideways nudge (the glitch moment) --- */
+.glitch-strip[data-phase="reveal"][data-dir="left"] {
+  animation: strip-reveal-left 300ms ease-in-out forwards;
+  animation-delay: calc(var(--strip-i) * 18ms);
+}
+.glitch-strip[data-phase="reveal"][data-dir="right"] {
+  animation: strip-reveal-right 300ms ease-in-out forwards;
+  animation-delay: calc(var(--strip-i) * 18ms);
+}
+
+@keyframes strip-reveal-left {
+  0%   { transform: translateX(0); }
+  25%  { transform: translateX(var(--strip-nudge, 0px)); }
+  100% { transform: translateX(100%); }
+}
+@keyframes strip-reveal-right {
+  0%   { transform: translateX(0); }
+  25%  { transform: translateX(var(--strip-nudge, 0px)); }
+  100% { transform: translateX(-100%); }
+}
